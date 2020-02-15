@@ -8,10 +8,17 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.LeadScrew;
+import frc.robot.subsystems.Switch;
+import frc.robot.subsystems.Pivot;
+
+// import frc.robot.subsystems.EndGame;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -21,11 +28,31 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  public ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  
+  public DriveTrain drive = new DriveTrain();
+  
+  public static Pivot m_pivot = new Pivot();
+  public static LeadScrew screwer = new LeadScrew();
+
+  public static Switch switching = new Switch();
+
+  // public EndGame end = new EndGame();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+ 
+  private Joystick screwJoy = new Joystick(2);
 
+  private Joystick switchJoy = new Joystick(3);
 
+  private Joystick pivotJoy = new Joystick(4); 
+  public Joystick getScrewJoy(){
+    return screwJoy;
+  }
+
+  public Joystick getSwtichJoy() {
+    return switchJoy;
+  }
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -45,6 +72,7 @@ public class RobotContainer {
   }
 
 
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -54,4 +82,8 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
   }
+
+public Joystick getPivotJoy() {
+	return pivotJoy;
+}
 }
