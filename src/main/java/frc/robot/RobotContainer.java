@@ -11,8 +11,12 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.RotatePivot;
+import frc.robot.commands.Screwing;
+import frc.robot.commands.Translating;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LeadScrew;
 import frc.robot.subsystems.Switch;
@@ -32,34 +36,49 @@ public class RobotContainer {
   
   public DriveTrain drive = new DriveTrain();
   
-  public static Pivot m_pivot = new Pivot();
-  public static LeadScrew screwer = new LeadScrew();
+  public static Pivot m_pivot;
+  public static LeadScrew screwer;
 
-  public static Switch switching = new Switch();
+  public static Switch switching;
 
   // public EndGame end = new EndGame();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
  
-  private Joystick screwJoy = new Joystick(2);
+  // private Joystick screwJoy = new Joystick(2);
 
-  private Joystick switchJoy = new Joystick(3);
+  // private Joystick switchJoy = new Joystick(3);
 
-  private Joystick pivotJoy = new Joystick(4); 
-  public Joystick getScrewJoy(){
-    return screwJoy;
+  private Joystick mechJoy; 
+  private JoystickButton leadScrewUp;
+  private JoystickButton leadScrewDown;
+  public Joystick getMechJoy() {
+    return mechJoy;
   }
+  // public Joystick getScrewJoy(){
+  //   return screwJoy;
+  // }
 
-  public Joystick getSwtichJoy() {
-    return switchJoy;
-  }
+  // public Joystick getSwtichJoy() {
+  //   return switchJoy;
+  // }
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    mechJoy = new Joystick(2);
     // Configure the button bindings
+    m_pivot = new Pivot();
+    screwer = new LeadScrew();
+    switching = new Switch();
+
     configureButtonBindings();
+
+  
+    switching.setDefaultCommand(new Translating());
+    m_pivot.setDefaultCommand(new RotatePivot());
+    
   }
 
   /**
@@ -69,6 +88,12 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    leadScrewUp = new JoystickButton(mechJoy,3);
+    leadScrewDown = new JoystickButton(mechJoy, 4);
+
+    leadScrewUp.whileHeld(new Screwing(0.5));
+    leadScrewDown.whileHeld(new Screwing(-0.5));
+
   }
 
 
@@ -83,7 +108,5 @@ public class RobotContainer {
     return m_autoCommand;
   }
 
-public Joystick getPivotJoy() {
-	return pivotJoy;
-}
+
 }

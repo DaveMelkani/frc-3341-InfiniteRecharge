@@ -16,11 +16,12 @@ public class Screwing extends CommandBase {
    * Creates a new Screwing.
    */
   private double speed;
-  
+  private double output;
 
-  public Screwing() {
+  public Screwing(double output) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.screwer);
+    this.output = output;
     
   }
 
@@ -33,8 +34,19 @@ public class Screwing extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (RobotContainer.m_pivot.canUseLeadScrew) {
-    RobotContainer.screwer.spin(Robot.m_robotContainer.getScrewJoy().getY());
+
+    if(RobotContainer.screwer.atTop()) {
+      RobotContainer.m_pivot.setLock(true);;
+      
+    } else if (RobotContainer.screwer.atBottom()) {
+      RobotContainer.m_pivot.setLock(false); 
+    }
+    else {
+      RobotContainer.m_pivot.setLock(true);;
+    }
+   // System.out.println(RobotContainer.m_pivot.canUseLeadScrew);
+    if (!(RobotContainer.screwer.getLock())) {
+      RobotContainer.screwer.spin(output);
     }
   }
 
@@ -47,16 +59,7 @@ public class Screwing extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(RobotContainer.screwer.getScrewTalon().getSensorCollection().isFwdLimitSwitchClosed()) {
-      RobotContainer.screwer.canUsePivot = true;
-      return true;
-    } else if (RobotContainer.screwer.getScrewTalon().getSensorCollection().isRevLimitSwitchClosed()) {
-      return true;
-    }
-    else {
-      return false;
-    }
+   return false;
     
   }
 }
-

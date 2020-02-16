@@ -15,7 +15,6 @@ public class Translating extends CommandBase {
   /**
    * Creates a new Translating.
    */
-  private double speed;
 
   public Translating() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -30,7 +29,7 @@ public class Translating extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.switching.move(Robot.m_robotContainer.getSwtichJoy().getY());
+    RobotContainer.switching.move(Robot.m_robotContainer.getMechJoy().getX());
   }
 
   // Called once the command ends or is interrupted.

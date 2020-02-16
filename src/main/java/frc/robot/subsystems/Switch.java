@@ -11,16 +11,16 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.commands.Translating;
+
 
 public class Switch extends SubsystemBase {
   /**
    * Creates a new Switch.
    */
-  private TalonSRX balance = new TalonSRX(4);
+ private TalonSRX balance = new TalonSRX(8);
 
   public Switch() {
-
+   //setDefaultCommand(new Translating());
   }
 
   public void move(double speed) {
@@ -30,7 +30,6 @@ public class Switch extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    setDefaultCommand(new Translating());
   }
 
   public TalonSRX getBalanceTalon() {

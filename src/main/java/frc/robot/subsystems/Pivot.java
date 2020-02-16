@@ -21,25 +21,42 @@ public class Pivot extends SubsystemBase {
   /**
    * Creates a new Pivot.
    */
-    private final TalonSRX motorLeft = new TalonSRX(2);
-  private final TalonSRX motorRight = new TalonSRX(3);
-  public boolean canUseLeadScrew;
+    private static Pivot pivot;
+    private final TalonSRX pivotMotor = new TalonSRX(5);
+  // private final TalonSRX motorRight = new TalonSRX(3);
+  private boolean lock = false;
 
-  public void Pivot(final double JOY) {
-    motorLeft.set(ControlMode.PercentOutput, JOY);
-    motorRight.set(ControlMode.PercentOutput, -JOY);
+  public void pivot(double JOY) {
+    pivotMotor.set(ControlMode.PercentOutput, JOY);
+    
 }
   public Pivot() {
-
+   // RotatePivot r = new RotatePivot();
   }
+  
+  public void setLock(boolean lock) {
+    this.lock = lock;
+  }
+  public boolean getLock() {
+    return lock;
+  }
+  public boolean atTop() {
+    return pivotMotor.getSensorCollection().isRevLimitSwitchClosed();
+  }
+  public boolean atBottom() {
+    return pivotMotor.getSensorCollection().isFwdLimitSwitchClosed();
+  }
+
+  
+  
 
   @Override
   public void periodic() {
-    setDefaultCommand(new RotatePivot());
+    //setDefaultCommand(new RotatePivot());
     // This method will be called once per scheduler run
     //Pivot(Robot.m_robotContainer.getPivotJoy().getY());
   }
   public TalonSRX getPivotTalon() {
-    return motorLeft;
+    return pivotMotor;
   }
 }

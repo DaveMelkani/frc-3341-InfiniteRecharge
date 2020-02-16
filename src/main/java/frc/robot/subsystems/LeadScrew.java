@@ -17,23 +17,35 @@ public class LeadScrew extends SubsystemBase {
   /**
    * Creates a new leadScrew.
    */
-  private TalonSRX screw = new TalonSRX(2);
-  public boolean canUsePivot = true;
+  private TalonSRX screw = new TalonSRX(4);
+  private boolean lock = true;
 
   public LeadScrew() {
     //this.setDefaultCommand(new Screwing());
   }
-  
+  public TalonSRX getScrewTalon() {
+    return screw;
+  }
+  public void setLock(boolean lock) {
+    this.lock = lock;
+  }
+  public boolean getLock() {
+    return lock;
+  }
+  public boolean atTop() {
+    return screw.getSensorCollection().isRevLimitSwitchClosed(); //this code is meant for the way the PowerUp limit switches were configured
+  }
+  public boolean atBottom() {
+    return screw.getSensorCollection().isFwdLimitSwitchClosed();
+  }
   public void spin(double speed){
     screw.set(ControlMode.PercentOutput,speed);
   }
 
   @Override
   public void periodic() {
-    setDefaultCommand(new Screwing());
+    //setDefaultCommand(new Screwing());
     // This method will be called once per scheduler run
   }
-  public TalonSRX getScrewTalon() {
-    return screw;
-  }
+  
 }
